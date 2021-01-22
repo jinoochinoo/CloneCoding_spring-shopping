@@ -30,4 +30,9 @@
         <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
     </bean>
 		
+	<!--  패키지 -->
+	<context:component-scan base-package="com.spring.domain"></context:component-scan>
+	<context:component-scan base-package="com.spring.persistence"></context:component-scan>
+	<context:component-scan base-package="com.spring.service"></context:component-scan>
+		
 </beans>
