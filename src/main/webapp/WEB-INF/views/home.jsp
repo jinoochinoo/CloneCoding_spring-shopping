@@ -6,10 +6,30 @@
 	<title>Home</title>
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
+<div id="root">
+	<header id="header">
+		<div id=header_box>
+			<%@ include file="include/header.jsp" %>
+		</div>
+	</header>
 
-<P>  The time on the server is ${serverTime}. </P>
+	<nav id="nav">
+		<div id="nav_box">
+			<%@ include file="include/nav.jsp" %>
+		</div>
+	</nav>
+	
+	<section id="container">
+		<div id="container_box">
+			본문
+		</div>
+	</section>
+	
+	<footer id="footer">
+		<div id="footer_box">
+			<%@ include file="include/footer.jsp" %>
+		</div>
+	</footer>
+</div>
 </body>
 </html>
