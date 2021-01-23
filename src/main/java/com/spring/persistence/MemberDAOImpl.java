@@ -18,8 +18,13 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public void signup(MemberVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println(vo.toString());
 		sql.insert(namespace + ".signup", vo);
+	}
+
+	@Override
+	public MemberVO signin(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sql.selectOne(namespace + ".signin", vo);
 	}
 
 }

@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 
 <h1 class="title">
-	<a herf="/">홈</a>
+	<a href="/">홈</a>
 </h1>

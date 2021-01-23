@@ -1,6 +1,8 @@
 package com.spring.controller;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.domain.MemberVO;
 import com.spring.service.MemberService;
@@ -18,7 +21,7 @@ import com.spring.service.MemberService;
 public class MemberController {
 
 	private static Logger logger = LoggerFactory.getLogger(MemberController.class);
-	
+
 	@Inject
 	MemberService service;
 	
@@ -37,8 +40,6 @@ public class MemberController {
 	public String postSignup(MemberVO vo) throws Exception{
 		logger.info("post signup");
 		
-		System.out.println(vo.toString());
-		
 		// 패스워드 BCrypt 암호화 -> 다시 vo 등록
 		String inputPass = vo.getUserPass();
 		String pass = passEncoder.encode(inputPass);
@@ -49,4 +50,41 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value="/signin", method=RequestMethod.GET)
+	public void getSignin() throws Exception{
+		logger.info("get signin");
+	}
+	
+	@RequestMapping(value="/signin", method=RequestMethod.POST)
+	public String postSignin(MemberVO vo, HttpServletRequest req, RedirectAttributes rttr) throws Exception{
+		logger.info("post signin");
+		
+		MemberVO login = service.signin(vo);
+		HttpSession session = req.getSession();
+		
+		// 비밀번호 확인
+		boolean passMatch = passEncoder.matches(vo.getUserPass(), login.getUserPass());
+		
+		// ID 잘못 입력 && 비밀번호 확인
+		if(login != null && passMatch) {
+			System.out.println("로그인 성공");
+			session.setAttribute("member", login);
+			System.out.println(login.toString());
+		} else {
+			System.out.println("로그인 실패");
+			session.setAttribute("member", null);
+			rttr.addFlashAttribute("msg", false);
+			return "redirect:/member/signin";
+		}
+		return "redirect:/member/signin";
+	}
+	
+	@RequestMapping(value="/signout", method=RequestMethod.GET)
+	public String signout(HttpSession session) throws Exception{
+		logger.info("get logout");
+		
+		service.signout(session);;
+		
+		return "redirect:/";
+	}
 }
