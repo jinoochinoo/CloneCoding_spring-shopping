@@ -67,16 +67,15 @@ public class MemberController {
 		
 		// ID 잘못 입력 && 비밀번호 확인
 		if(login != null && passMatch) {
-			System.out.println("로그인 성공");
 			session.setAttribute("member", login);
-			System.out.println(login.toString());
+
 		} else {
 			System.out.println("로그인 실패");
 			session.setAttribute("member", null);
 			rttr.addFlashAttribute("msg", false);
 			return "redirect:/member/signin";
 		}
-		return "redirect:/member/signin";
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value="/signout", method=RequestMethod.GET)
